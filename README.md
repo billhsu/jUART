@@ -1,4 +1,4 @@
-juart
+jUART
 =====
 
 Serial Port for JavaScript
