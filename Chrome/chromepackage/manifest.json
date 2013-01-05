@@ -1,0 +1,9 @@
+{
+  "name": "jUART",
+  "version": "${FBSTRING_PLUGIN_VERSION}",
+  "description": "Serial Port for JavaScript",
+
+	"plugins": [
+    { "path": "npjUART.dll", "public": true }
+  ]
+}
