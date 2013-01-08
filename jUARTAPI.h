@@ -54,9 +54,7 @@ public:
     ///         the plugin is released.
     ///////////////////////////////////////////////////////////////////////////////
     virtual ~jUARTAPI() {};
-
     jUARTPtr getPlugin();
-
     // Read/Write property ${PROPERTY.ident}
     std::string get_testString();
     void set_testString(const std::string& val);

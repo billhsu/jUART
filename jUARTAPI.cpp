@@ -10,6 +10,7 @@
 #include "global/config.h"
 
 #include "jUARTAPI.h"
+#include "Serial.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn FB::variant jUARTAPI::echo(const FB::variant& msg)
@@ -20,8 +21,8 @@
 FB::variant jUARTAPI::echo(const FB::variant& msg)
 {
     static int n(0);
-    fire_echo("So far, you clicked this many times: ", n++);
-
+    //fire_echo("So far, you clicked this many times: ", n++);
+    Serial serial("COM1",115200);
     // return "foobar";
     return msg;
 }
