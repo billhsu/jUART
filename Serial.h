@@ -2,13 +2,13 @@
 #define H_Serial
 #include "asio.hpp"
 
-class Serial
+class Serial: private boost::noncopyable
 {
 public:
-    Serial(std::string port, unsigned int baud_rate)
-        : io(), serial(io,port)
+    Serial()
+        : io(), serial(io)
     {
-        serial.set_option(asio::serial_port_base::baud_rate(baud_rate));
+        
     }
     ~Serial(void);
 private:

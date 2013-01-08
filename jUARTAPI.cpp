@@ -22,7 +22,7 @@ FB::variant jUARTAPI::echo(const FB::variant& msg)
 {
     static int n(0);
     //fire_echo("So far, you clicked this many times: ", n++);
-    Serial serial("COM1",115200);
+    Serial serial;
     // return "foobar";
     return msg;
 }
