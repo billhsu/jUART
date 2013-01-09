@@ -1,3 +1,11 @@
+/****************************************************************/
+// By Bill Hsu
+// Shanghai University
+// My Blog:        http://BillHsu.me
+// jUART Project:  http://BillHsu.github.com/jUART/
+// Created on:     2013-01-04
+/****************************************************************/
+
 /**********************************************************\
 
   Auto-generated jUARTAPI.h
