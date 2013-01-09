@@ -11,6 +11,12 @@ public:
         
     }
     ~Serial(void);
+
+    bool open(std::string device)
+    {
+        serial.open(device);
+        return serial.is_open();
+    }
 private:
     asio::io_service io;
     asio::serial_port serial;
