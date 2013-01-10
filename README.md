@@ -2,6 +2,8 @@
 
 jUART, Cross platform browser plugin for Serial communication from JavaScript
 
-Support:
+###Supported Browsers:
+Chrome, Firefox, Safari, IE
 
-Chrome, Firefox, Safari in Win, Linux and Mac
+###Supported OS:
+Windows, Linux and Mac
