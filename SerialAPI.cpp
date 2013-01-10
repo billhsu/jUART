@@ -6,6 +6,8 @@
 // Created on:     2013-01-09
 /****************************************************************/
 
+// Thanks to minicom.cpp
+
 #include "SerialAPI.h"
 #include <boost/thread.hpp> 
 

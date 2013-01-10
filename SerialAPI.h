@@ -6,8 +6,6 @@
 // Created on:     2013-01-09
 /****************************************************************/
 
-// Thanks to minicom.cpp
-
 #ifndef H_SerialAPI
 #define H_SerialAPI
 #include <boost/bind.hpp> 

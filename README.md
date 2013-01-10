@@ -1,5 +1,7 @@
-![jUART](https://github.com/billhsu/jUART/raw/master/doc/jUART_Logo.png)
-jUART
-=====
+[![jUART](https://github.com/billhsu/jUART/raw/master/doc/jUART_Logo.png)](http://billhsu.github.com/jUART/)
 
-Serial Port for JavaScript
+jUART, Cross platform browser plugin for Serial communication from JavaScript
+
+Support:
+
+Chrome, Firefox, Safari in Win, Linux and Mac
