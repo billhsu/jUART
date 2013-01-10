@@ -18,7 +18,40 @@
 #include "global/config.h"
 
 #include "jUARTAPI.h"
-#include "Serial.h"
+#include "SerialAPI.h"
+
+////////////////////////////////////////////////////////////////////////////
+/// @fn jUARTAPI::jUARTAPI(const jUARTPtr& plugin, const FB::BrowserHostPtr host)
+///
+/// @brief  Constructor for your JSAPI object.
+///         You should register your methods, properties, and events
+///         that should be accessible to Javascript from here.
+///
+/// @see FB::JSAPIAuto::registerMethod
+/// @see FB::JSAPIAuto::registerProperty
+/// @see FB::JSAPIAuto::registerEvent
+////////////////////////////////////////////////////////////////////////////
+jUARTAPI::jUARTAPI(const jUARTPtr& plugin, const FB::BrowserHostPtr& host) :
+m_plugin(plugin), m_host(host)
+{
+    registerMethod("echo",      make_method(this, &jUARTAPI::echo));
+    registerMethod("testEvent", make_method(this, &jUARTAPI::testEvent));
+
+    registerProperty("Serial",  make_property(this, &jUARTAPI::get_Serial));
+
+    // Read-write property
+    registerProperty("testString",
+        make_property(this,
+        &jUARTAPI::get_testString,
+        &jUARTAPI::set_testString));
+
+    // Read-only property
+    registerProperty("version",
+        make_property(this,
+        &jUARTAPI::get_version));
+
+    m_Serial = boost::make_shared<SerialAPI>(m_host);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn FB::variant jUARTAPI::echo(const FB::variant& msg)
@@ -30,7 +63,6 @@ FB::variant jUARTAPI::echo(const FB::variant& msg)
 {
     static int n(0);
     //fire_echo("So far, you clicked this many times: ", n++);
-    Serial serial;
     // return "foobar";
     return msg;
 }
@@ -72,4 +104,9 @@ std::string jUARTAPI::get_version()
 void jUARTAPI::testEvent()
 {
     fire_test();
+}
+
+boost::weak_ptr<SerialAPI> jUARTAPI::get_Serial()
+{
+    return m_Serial;
 }

@@ -18,41 +18,19 @@
 #include "JSAPIAuto.h"
 #include "BrowserHost.h"
 #include "jUART.h"
+#include "FBPointers.h"
 
 #ifndef H_jUARTAPI
 #define H_jUARTAPI
 
+
+FB_FORWARD_PTR(SerialAPI);
+
 class jUARTAPI : public FB::JSAPIAuto
 {
 public:
-    ////////////////////////////////////////////////////////////////////////////
-    /// @fn jUARTAPI::jUARTAPI(const jUARTPtr& plugin, const FB::BrowserHostPtr host)
-    ///
-    /// @brief  Constructor for your JSAPI object.
-    ///         You should register your methods, properties, and events
-    ///         that should be accessible to Javascript from here.
-    ///
-    /// @see FB::JSAPIAuto::registerMethod
-    /// @see FB::JSAPIAuto::registerProperty
-    /// @see FB::JSAPIAuto::registerEvent
-    ////////////////////////////////////////////////////////////////////////////
-    jUARTAPI(const jUARTPtr& plugin, const FB::BrowserHostPtr& host) :
-        m_plugin(plugin), m_host(host)
-    {
-        registerMethod("echo",      make_method(this, &jUARTAPI::echo));
-        registerMethod("testEvent", make_method(this, &jUARTAPI::testEvent));
-        
-        // Read-write property
-        registerProperty("testString",
-                         make_property(this,
-                                       &jUARTAPI::get_testString,
-                                       &jUARTAPI::set_testString));
-        
-        // Read-only property
-        registerProperty("version",
-                         make_property(this,
-                                       &jUARTAPI::get_version));
-    }
+    //
+    jUARTAPI(const jUARTPtr& plugin, const FB::BrowserHostPtr& host);
 
     ///////////////////////////////////////////////////////////////////////////////
     /// @fn jUARTAPI::~jUARTAPI()
@@ -79,12 +57,15 @@ public:
 
     // Method test-event
     void testEvent();
+    boost::weak_ptr<SerialAPI> get_Serial();
 
 private:
     jUARTWeakPtr m_plugin;
     FB::BrowserHostPtr m_host;
 
     std::string m_testString;
+
+    SerialAPIPtr m_Serial;
 };
 
 #endif // H_jUARTAPI
