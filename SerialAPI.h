@@ -51,6 +51,8 @@ public:
         return serial.is_open();
     }
 
+    void recv_callback(const FB::JSObjectPtr& callback);
+
 
 
 private:
@@ -64,6 +66,7 @@ private:
     std::deque<char> send_msg;
 
     FB::BrowserHostPtr m_host;
+    FB::JSObjectPtr m_callback;
 
     boost::thread m_thread;
 

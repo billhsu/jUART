@@ -13,6 +13,13 @@
 
 SerialAPI::SerialAPI(const FB::BrowserHostPtr& host) : m_host(host),io(), serial(io)
 {
+    registerMethod("open",  make_method(this, &SerialAPI::open));
+    registerMethod("set_option",  make_method(this, &SerialAPI::set_option));
+    registerMethod("send",  make_method(this, &SerialAPI::send));
+    registerMethod("is_open",  make_method(this, &SerialAPI::is_open));
+    registerMethod("recv_callback",  make_method(this, &SerialAPI::recv_callback));
+
+
     boost::thread m_thread(boost::bind(&boost::asio::io_service::run, &io)); 
 }
 
@@ -50,6 +57,11 @@ bool SerialAPI::set_option(unsigned int baud, unsigned int parity,
     return true;
 }
 
+void SerialAPI::recv_callback(const FB::JSObjectPtr& callback)
+{
+    m_callback = callback;
+}
+
 void SerialAPI::recv_start(void) 
 { // Start an asynchronous read and call read_complete when it completes or fails 
     serial.async_read_some(boost::asio::buffer(recv_msg, max_buffer_length), 
@@ -63,7 +75,11 @@ void SerialAPI::recv_complete(const boost::system::error_code& error, size_t byt
 { // the asynchronous read operation has now completed or failed and returned an error 
     if (!error) 
     { // read completed, so process the data 
-        //cout.write(recv_msg, bytes_transferred); // echo to standard output 
+        //cout.write(recv_msg, bytes_transferred); // echo to standard output
+        std::vector<char> valVec(recv_msg, recv_msg+bytes_transferred);
+        FB::VariantList vars = FB::make_variant_list(valVec);
+
+        m_callback->InvokeAsync("", FB::variant_list_of(vars)(bytes_transferred));
         recv_start(); // start waiting for another asynchronous read again 
     } 
     else 
