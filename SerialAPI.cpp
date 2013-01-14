@@ -16,23 +16,24 @@ SerialAPI::SerialAPI(const FB::BrowserHostPtr& host) : m_host(host),io(), serial
     registerMethod("open",  make_method(this, &SerialAPI::open));
     registerMethod("set_option",  make_method(this, &SerialAPI::set_option));
     registerMethod("send",  make_method(this, &SerialAPI::send));
+    registerMethod("sendtest",  make_method(this, &SerialAPI::sendtest));
     registerMethod("is_open",  make_method(this, &SerialAPI::is_open));
     registerMethod("recv_callback",  make_method(this, &SerialAPI::recv_callback));
-
-
-    boost::thread m_thread(boost::bind(&boost::asio::io_service::run, &io)); 
+    registerMethod("close",  make_method(this, &SerialAPI::close));
 }
 
 SerialAPI::~SerialAPI(void)
 {
     m_thread.interrupt();
+    close();
     m_thread.join();
 }
 
 bool SerialAPI::open(std::string _device)
 {
-    serial.open(device);
+    serial.open(_device);
     if(serial.is_open())device = _device;
+    m_thread = boost::thread(boost::bind(&boost::asio::io_service::run, &io));
     return serial.is_open();
 }
 

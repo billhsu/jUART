@@ -45,10 +45,19 @@ public:
     {
         io.post(boost::bind(&SerialAPI::do_send, this, msg)); 
     }
-
+    bool sendtest()
+    {
+        io.post(boost::bind(&SerialAPI::do_send, this, 'a'));
+        return true;
+    }
     bool is_open()
     {
         return serial.is_open();
+    }
+
+    void close()
+    {
+        if(is_open())serial.close();
     }
 
     void recv_callback(const FB::JSObjectPtr& callback);
