@@ -42,10 +42,13 @@ bool SerialAPI::set_option(unsigned int baud, unsigned int parity,
     if(!serial.is_open())   return false;
 
     boost::asio::serial_port_base::baud_rate opt_baud(baud);
-    boost::asio::serial_port_base::parity opt_parity(static_cast<boost::asio::serial_port_base::parity::type>(parity));
+    boost::asio::serial_port_base::parity opt_parity(
+        static_cast<boost::asio::serial_port_base::parity::type>(parity));
     boost::asio::serial_port_base::character_size opt_csize(csize);
-    boost::asio::serial_port_base::flow_control opt_flow(static_cast<boost::asio::serial_port_base::flow_control::type>(flow));
-    boost::asio::serial_port_base::stop_bits opt_stop(static_cast<boost::asio::serial_port_base::stop_bits::type>(stop));
+    boost::asio::serial_port_base::flow_control opt_flow(
+        static_cast<boost::asio::serial_port_base::flow_control::type>(flow));
+    boost::asio::serial_port_base::stop_bits opt_stop(
+        static_cast<boost::asio::serial_port_base::stop_bits::type>(stop));
 
     serial.set_option(opt_baud);
     serial.set_option(opt_parity);
@@ -81,7 +84,10 @@ void SerialAPI::recv_complete(const boost::system::error_code& error, size_t byt
         std::vector<char> valVec(recv_msg, recv_msg+bytes_transferred);
         FB::VariantList vars = FB::make_variant_list(valVec);
 
-        m_callback->InvokeAsync("", FB::variant_list_of(vars)(bytes_transferred));
+        if(m_callback)
+            m_callback->InvokeAsync("", FB::variant_list_of
+            (vars)
+            (bytes_transferred));
         recv_start(); // start waiting for another asynchronous read again 
     } 
     else 
