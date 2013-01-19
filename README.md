@@ -13,6 +13,7 @@ jUART, Cross platform browser plugin for serial port communication from JavaScri
 Copy the /bin/Windows/npjUART.dll into your browser's plugin directory.
 
 Take FireFox for example:
+Copy `/bin/Windows/npjUART.dll` to `C:\Program Files (x86)\Mozilla Firefox\plugins`
 
 ###Linux:
 Copy the ./bin/Linux/npjUART.so into your browser's plugin directory.
@@ -23,16 +24,84 @@ Take FireFox for example:
 sudo cp npjUART.so ~/.mozilla/plugins/
 ```
 
-Restart FireFox
-
 ###Mac:
 Mac version not released yet, I don't have a Mac to build and test the project. Sorry :-(
 
-##To Test
+##Usage
+* `var ser = plugin().Serial;` Get a Serial object
+* `ser.open("COMA");` Open a port
+* `ser.set_option(baud, parity, csize, flow, stop);` Set port options
+
+* * **baud:**       Baud rate
+
+* * **parity:**     0->none, 1->odd, 2->even
+
+* * **csize:**      5 6 7 8
+
+* * **flow:**       0->none, 1->software, 2->hardware
+
+* * **stop:**       0->one,  1->onepointfive, 2->two
+
+* `ser.recv_callback(recv);` Bind callback function for recieve data.
+
+* * 'recv' is a function in JavaScript,`function recv(bytes, size)`
+* * 'bytes' are the data recieved, 'size' is the size of the bytes recieved
+
+* `ser.send(char);` Send a byte to serial port
+
+Here is a echo test example, which is contained in the /example directory.
+```
+<html>
+  <head>
+    <title>test page for object fbcontrol</title>
+  </head>
+  <script type="text/javascript">
+    var ser;
+    function plugin0()
+    {
+      return document.getElementById('plugin0');
+    }
+    plugin = plugin0;
+        
+    function recv(bytes, size)
+    {
+      for(var i=0;i<size;++i)
+      {
+        ser.send(bytes[i]);
+      }
+    }
+        
+    function pluginLoaded() 
+    {
+      ser = plugin().Serial;// Get a Serial object
+      ser.open("COMA");// Open a port
+      ser.set_option(115200,0,8,0,0);// Set port options 
+      ser.recv_callback(recv); // Callback function for recieve data
+    }
+
+    function pluginValid()
+    {
+      if(plugin().valid){
+        alert(plugin().echo("This plugin seems to be working!"));
+      } else {
+        alert("Plugin is not working :(");
+      }
+    }
+  </script>
+  <body onload="load()">
+    <object id="plugin0" type="application/x-juart" width="0" height="0" >
+      <param name="onload" value="pluginLoaded"  />
+    </object>
+    <h1>jUART Serial Port Echo Test</h1><br/>
+    This test will echo the data you sent through serial port.
+  </body>
+</html>
+
+```
 
 ##To Build
-* 1. Install FireBreath
-* 2. Run `python fbgen.py`, please set "Plugin Name" to jUART
+* 1. Install [FireBreath](http://www.firebreath.org)
+* 2. Run `python fbgen.py` in firebreath-dev, please set "Plugin Name" to jUART
 * 3. Goto firebreath-dev/projects, delete the jUART directory
 * 4. Same in firebreath-dev/projects, run ``git clone git@github.com:billhsu/jUART.git``
 * 5. **Windows:** `prep2008.cmd` (or `prep2005.cmd` / `prep2010.cmd`if you have VS2005/2010) **Linux:** `./prepmake.sh` **Mac:** `./prepmac.sh`
