@@ -49,7 +49,7 @@ Mac version not released yet, I don't have a Mac to build and test the project. 
 
 * `ser.send(char);` Send a byte to serial port
 
-Here is a echo test example, which is contained in the /example directory.
+Here is an echo test example, which is contained in the /example directory.
 ```
 <html>
   <head>
@@ -106,3 +106,10 @@ Here is a echo test example, which is contained in the /example directory.
 * 4. Same in firebreath-dev/projects, run ``git clone git@github.com:billhsu/jUART.git``
 * 5. **Windows:** `prep2008.cmd` (or `prep2005.cmd` / `prep2010.cmd`if you have VS2005/2010) **Linux:** `./prepmake.sh` **Mac:** `./prepmac.sh`
 * 6. **Windows:** open build/Firebreath.xxx **Linux:**``cd build/`` then ``make``
+
+##Author
+**Bill Hsu**
+
++ http://BillHsu.me
++ http://twitter.com/1991bill
++ http://weibo.com/billhsu
