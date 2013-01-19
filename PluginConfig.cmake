@@ -54,7 +54,7 @@ set(FBSTRING_MIMEType "application/x-juart")
 # Uncomment this next line if you're not planning on your plugin doing
 # any drawing:
 
-#set (FB_GUI_DISABLED 1)
+set (FB_GUI_DISABLED 1)
 
 # Mac plugin settings. If your plugin does not draw, set these all to 0
 set(FBMAC_USE_QUICKDRAW 0)
