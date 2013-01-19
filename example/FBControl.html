@@ -1,59 +1,31 @@
 <html>
-<head>
-<title>test page for object fbcontrol</title>
-</head>
+    <head>
+        <title>test page for object fbcontrol</title>
+    </head>
     <script type="text/javascript">
+        var ser;
         function plugin0()
         {
             return document.getElementById('plugin0');
         }
         plugin = plugin0;
-        function addEvent(obj, name, func)
+        
+        function recv(bytes, size)
         {
-            if (obj.attachEvent) {
-                obj.attachEvent("on"+name, func);
-            } else {
-                obj.addEventListener(name, func, false); 
+            for(var i=0;i<size;++i)
+            {
+                ser.send(bytes[i]);
             }
         }
-        function msgrd(vars, size)
-        {
-            alert(vars+" "+size);
-        }
-        function load()
-        {
-            addEvent(plugin(), 'test', function(){
-                alert("Received a test event from the plugin.")
-            });
-        }
-        function pluginLoaded() {
-            alert("Plugin loaded!");
-			/*var ser = plugin().Serial;
-			ser.open("COMA");
-			ser.set_option(115200,0,8,0,0);
-			ser.sendtest();
-			ser.send('v');
-			ser.recv_callback(msgrd);
-			ser.close();
-			ser.open("COMA");
-			ser.set_option(115200,0,8,0,0);
-			ser.sendtest();
-			ser.send('d');*/
-			
-        }
         
-        function addTestEvent()
+        function pluginLoaded() 
         {
-            addEvent(plugin(), 'echo', function(txt,count){
-                alert(txt+count);
-            });
+            ser = plugin().Serial;// Get a Serial object
+			ser.open("COMA");// Open a port
+			ser.set_option(115200,0,8,0,0);// Set port options 
+			ser.recv_callback(recv); // Callback function for recieve data
         }
-        
-        function testEvent()
-        {
-            plugin().testEvent();
-        }
-        
+
         function pluginValid()
         {
             if(plugin().valid){
@@ -63,13 +35,11 @@
             }
         }
     </script>
-<body onload="load()">
-<object id="plugin0" type="application/x-juart" >
-    <param name="onload" value="pluginLoaded" />
-</object><br />
-    
-<a href="#" onclick="javascript:pluginValid()">Click me!</a> <br />
-<a href="#" onclick="javascript:addTestEvent()">Activate click counter</a> <br />
-<a href="#" onclick="javascript:testEvent()">Fire a test event</a> <br />
-</body>
+    <body onload="load()">
+        <object id="plugin0" type="application/x-juart" width="0" height="0" >
+            <param name="onload" value="pluginLoaded"  />
+        </object><br />
+        <h1>jUART Serial Port Echo Test</h1><br/>
+        This test will echo the data you sent through serial port.
+    </body>
 </html>
