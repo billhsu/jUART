@@ -3,7 +3,7 @@
 jUART, Cross platform browser plugin for serial port communication from JavaScript
 
 ##Supported Platforms:
-* **Browsers:** Chrome, Firefox, Safari, IE(IE version not released yet)
+* **Browsers:** Chrome, Firefox, Safari, IE(IE version is not released yet)
 
 * **OS:** Windows, Linux and Mac
 
@@ -25,7 +25,7 @@ sudo cp npjUART.so ~/.mozilla/plugins/
 ```
 
 ###Mac:
-Mac version not released yet, I don't have a Mac to build and test the project. Sorry :-(
+Mac version is not released yet, I don't have a Mac to build and test the project. Sorry :-(
 
 ##Usage
 * `var ser = plugin().Serial;` Get a Serial object
