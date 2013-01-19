@@ -57,10 +57,13 @@ public:
 
     void close()
     {
-        if(is_open())serial.close();
+        io.post(boost::bind(&SerialAPI::do_close, this, boost::system::error_code()));
+        m_thread.join();
+        io.reset();
     }
 
     void recv_callback(const FB::JSObjectPtr& callback);
+    void err_callback(const FB::JSObjectPtr& callback);
 
 
 
@@ -75,7 +78,8 @@ private:
     std::deque<char> send_msg;
 
     FB::BrowserHostPtr m_host;
-    FB::JSObjectPtr m_callback;
+    FB::JSObjectPtr m_recv_callback;
+    FB::JSObjectPtr m_err_callback;
 
     boost::thread m_thread;
 

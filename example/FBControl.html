@@ -1,0 +1,78 @@
+<!--
+    Auto-generated test-site
+-->
+<html>
+<head>
+<title>test page for object fbcontrol</title>
+</head>
+    <script type="text/javascript">
+        function plugin0()
+        {
+            return document.getElementById('plugin0');
+        }
+        plugin = plugin0;
+        function addEvent(obj, name, func)
+        {
+            if (obj.attachEvent) {
+                obj.attachEvent("on"+name, func);
+            } else {
+                obj.addEventListener(name, func, false); 
+            }
+        }
+        function msgrd(vars, size)
+        {
+            alert(vars+" "+size);
+        }
+        function load()
+        {
+            addEvent(plugin(), 'test', function(){
+                alert("Received a test event from the plugin.")
+            });
+        }
+        function pluginLoaded() {
+            //alert("Plugin loaded!");
+			var ser = plugin().Serial;
+			ser.open("COMA");
+			ser.set_option(115200,0,8,0,0);
+			ser.sendtest();
+			ser.send('v');
+			ser.recv_callback(msgrd);
+			ser.close();
+			ser.open("COMA");
+			ser.set_option(115200,0,8,0,0);
+			ser.sendtest();
+			ser.send('d');
+			
+        }
+        
+        function addTestEvent()
+        {
+            addEvent(plugin(), 'echo', function(txt,count){
+                alert(txt+count);
+            });
+        }
+        
+        function testEvent()
+        {
+            plugin().testEvent();
+        }
+        
+        function pluginValid()
+        {
+            if(plugin().valid){
+                alert(plugin().echo("This plugin seems to be working!"));
+            } else {
+                alert("Plugin is not working :(");
+            }
+        }
+    </script>
+<body onload="load()">
+<object id="plugin0" type="application/x-juart" >
+    <param name="onload" value="pluginLoaded" />
+</object><br />
+    
+<a href="#" onclick="javascript:pluginValid()">Click me!</a> <br />
+<a href="#" onclick="javascript:addTestEvent()">Activate click counter</a> <br />
+<a href="#" onclick="javascript:testEvent()">Fire a test event</a> <br />
+</body>
+</html>

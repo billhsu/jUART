@@ -26,7 +26,6 @@ SerialAPI::~SerialAPI(void)
 {
     m_thread.interrupt();
     close();
-    m_thread.join();
 }
 
 bool SerialAPI::open(std::string _device)
@@ -34,6 +33,7 @@ bool SerialAPI::open(std::string _device)
     serial.open(_device);
     if(serial.is_open())device = _device;
     return serial.is_open();
+
 }
 
 bool SerialAPI::set_option(unsigned int baud, unsigned int parity,
@@ -64,7 +64,12 @@ bool SerialAPI::set_option(unsigned int baud, unsigned int parity,
 
 void SerialAPI::recv_callback(const FB::JSObjectPtr& callback)
 {
-    m_callback = callback;
+    m_recv_callback = callback;
+}
+
+void SerialAPI::err_callback(const FB::JSObjectPtr& callback)
+{
+    m_err_callback = callback;
 }
 
 void SerialAPI::recv_start(void) 
@@ -84,8 +89,8 @@ void SerialAPI::recv_complete(const boost::system::error_code& error, size_t byt
         std::vector<char> valVec(recv_msg, recv_msg+bytes_transferred);
         FB::VariantList vars = FB::make_variant_list(valVec);
 
-        if(m_callback)
-            m_callback->InvokeAsync("", FB::variant_list_of
+        if(m_recv_callback)
+            m_recv_callback->InvokeAsync("", FB::variant_list_of
             (vars)
             (bytes_transferred));
         recv_start(); // start waiting for another asynchronous read again 
@@ -116,7 +121,7 @@ void SerialAPI::send_complete(const boost::system::error_code& error)
     if (!error) 
     { // write completed, so send next write data 
         send_msg.pop_front(); // remove the completed data 
-        if (!send_msg.empty()) // if there is anthing left to be written 
+        if (!send_msg.empty()) // if there is anything left to be written 
             send_start(); // then start sending the next item in the buffer 
     } 
     else 
@@ -126,6 +131,7 @@ void SerialAPI::send_complete(const boost::system::error_code& error)
 void SerialAPI::do_close(const boost::system::error_code& error) 
 {
     if (error == boost::asio::error::operation_aborted) // if this call is the result of a timer cancel() 
-        return; // ignore it because the connection cancelled the timer 
+        return; // ignore it because the connection canceled the timer 
+    
     serial.close(); 
 }
