@@ -10,6 +10,8 @@
 
 #include "SerialAPI.h"
 #include <boost/thread.hpp> 
+#include <boost/exception/all.hpp>
+#include <boost/exception/get_error_info.hpp>
 
 SerialAPI::SerialAPI(const FB::BrowserHostPtr& host) : m_host(host),io(), serial(io)
 {
@@ -19,6 +21,7 @@ SerialAPI::SerialAPI(const FB::BrowserHostPtr& host) : m_host(host),io(), serial
     registerMethod("sendtest",  make_method(this, &SerialAPI::sendtest));
     registerMethod("is_open",  make_method(this, &SerialAPI::is_open));
     registerMethod("recv_callback",  make_method(this, &SerialAPI::recv_callback));
+    registerMethod("err_callback",  make_method(this, &SerialAPI::err_callback));
     registerMethod("close",  make_method(this, &SerialAPI::close));
 }
 
@@ -30,7 +33,16 @@ SerialAPI::~SerialAPI(void)
 
 bool SerialAPI::open(std::string _device)
 {
-    serial.open(_device);
+    try
+    {
+        serial.open(_device);
+    }
+    catch (boost::exception& e)
+    {
+    	if(m_err_callback)
+            m_recv_callback->InvokeAsync("", FB::variant_list_of
+            (boost::get_error_info<boost::errinfo_file_open_mode>(e)));
+    }
     if(serial.is_open())device = _device;
     return serial.is_open();
 
