@@ -21,7 +21,7 @@
         function pluginLoaded() 
         {
             ser = plugin().Serial;// Get a Serial object
-			ser.open("COMA");// Open a port
+			ser.open("COM5");// Open a port
 			ser.set_option(115200,0,8,0,0);// Set port options 
 			ser.recv_callback(recv); // Callback function for recieve data
         }
