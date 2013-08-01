@@ -64,36 +64,6 @@ public:
         return true;
     }
 
-	void DetectComPorts(std::vector<std::wstring>& list)
-	{
-		for(int i=1; i<=255; i++)	
-		{
-			wchar_t buff[100];
-			wsprintf(buff, TEXT("COM%d"), i);
-			std::wstring wstrPort = buff;
-			//strPort.Format("COM%d",i);
-	
-			DWORD dwSize = 0;
-			LPCOMMCONFIG lpCC = (LPCOMMCONFIG) new BYTE[1];
-			BOOL ret = GetDefaultCommConfig(wstrPort.c_str(), lpCC, &dwSize);
-			delete [] lpCC;	
-
-			lpCC = (LPCOMMCONFIG) new BYTE[dwSize];
-			ret = GetDefaultCommConfig(wstrPort.c_str(), lpCC, &dwSize);
-		
-			if(ret)
-				list.push_back(wstrPort);
-		
-			delete [] lpCC;
-		}
-	}
-
-	FB::VariantList getports() {
-		std::vector<std::wstring> valVec;
-		DetectComPorts(valVec);
-		return FB::make_variant_list(valVec);
-	}
-
     bool is_open()
     {
         return serial.is_open();

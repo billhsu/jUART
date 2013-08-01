@@ -24,7 +24,6 @@ SerialAPI::SerialAPI(const FB::BrowserHostPtr& host) : m_host(host),io(), serial
     registerMethod("recv_callback",  make_method(this, &SerialAPI::recv_callback));
     registerMethod("err_callback",  make_method(this, &SerialAPI::err_callback));
     registerMethod("close",  make_method(this, &SerialAPI::close));
-	registerMethod("getports",  make_method(this, &SerialAPI::getports));
 }
 
 SerialAPI::~SerialAPI(void)
