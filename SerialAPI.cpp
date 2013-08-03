@@ -18,6 +18,7 @@ SerialAPI::SerialAPI(const FB::BrowserHostPtr& host) : m_host(host),io(), serial
     registerMethod("open",  make_method(this, &SerialAPI::open));
     registerMethod("set_option",  make_method(this, &SerialAPI::set_option));
     registerMethod("send",  make_method(this, &SerialAPI::send));
+	registerMethod("sendmulti",  make_method(this, &SerialAPI::sendmulti));
     registerMethod("sendtest",  make_method(this, &SerialAPI::sendtest));
     registerMethod("is_open",  make_method(this, &SerialAPI::is_open));
     registerMethod("recv_callback",  make_method(this, &SerialAPI::recv_callback));
@@ -111,6 +112,18 @@ void SerialAPI::recv_complete(const boost::system::error_code& error, size_t byt
         do_close(error); 
 } 
 
+void SerialAPI::do_multi_send(const char msg[], const int length) 
+{
+	bool write_in_progress = !send_msg.empty(); // is there anything currently being written? 
+	for(int i = 0; i < length; i++)
+	{
+		send_msg.push_back(msg[i]); // store in write buffer 
+	}
+
+    if (!write_in_progress) // if nothing is currently being written, then start 
+        send_multi_start(length); 
+}
+
 void SerialAPI::do_send(const char msg) 
 {
     bool write_in_progress = !send_msg.empty(); // is there anything currently being written? 
@@ -119,6 +132,15 @@ void SerialAPI::do_send(const char msg)
         send_start(); 
 } 
 
+void SerialAPI::send_multi_start(int length) 
+{
+    boost::asio::async_write(serial, 
+        boost::asio::buffer(&send_msg.front(), length), 
+        boost::bind(&SerialAPI::send_multi_complete, 
+        this, 
+        boost::asio::placeholders::error)); 
+}
+
 void SerialAPI::send_start(void)
 { // Start an asynchronous write and call write_complete when it completes or fails 
     boost::asio::async_write(serial, 
@@ -126,6 +148,16 @@ void SerialAPI::send_start(void)
         boost::bind(&SerialAPI::send_complete, 
         this, 
         boost::asio::placeholders::error)); 
+} 
+
+void SerialAPI::send_multi_complete(const boost::system::error_code& error) 
+{ // the asynchronous read operation has now completed or failed and returned an error 
+    if (!error) 
+    { // write completed, so send next write data 
+        send_msg.clear(); // remove the completed data 
+    } 
+    else 
+        do_close(error); 
 } 
 
 void SerialAPI::send_complete(const boost::system::error_code& error) 

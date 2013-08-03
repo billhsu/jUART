@@ -40,16 +40,30 @@ public:
     bool set_option(unsigned int baud, unsigned int parity = 0,
         unsigned int csize = 8, unsigned int flow = 0, unsigned int stop = 0);
 
+	void sendmulti(const FB::JSObjectPtr& msg, int length)
+	{
+		unsigned char *message = new unsigned char[length];
+		FB::variant v;
+		for(int i = 0; i < length; i++)
+		{
+			v = msg->GetProperty(i);
+			message[i] = v.convert_cast<unsigned char>();
+		}
+		io.post(boost::bind(&SerialAPI::do_multi_send, this, (char *)message, length));
+	}
+
     // Send a byte to serial port
-    void send(const char msg)
+    void send(const int msg)
     {
-        io.post(boost::bind(&SerialAPI::do_send, this, msg)); 
+        io.post(boost::bind(&SerialAPI::do_send, this, (const char)msg)); 
     }
+
     bool sendtest()
     {
         io.post(boost::bind(&SerialAPI::do_send, this, 'a'));
         return true;
     }
+
     bool is_open()
     {
         return serial.is_open();
@@ -85,9 +99,13 @@ private:
 
     void recv_start(void);
     void recv_complete(const boost::system::error_code& error, size_t bytes_transferred);
-
+	void do_multi_send(const char msg[], int length);
     void do_send(const char msg);
+
+	void send_multi_start(int length);
     void send_start(void);
+
+	void send_multi_complete(const boost::system::error_code& error);
     void send_complete(const boost::system::error_code& error);
 
     void do_close(const boost::system::error_code& error);
