@@ -49,13 +49,13 @@ public:
 			v = msg->GetProperty(i);
 			message[i] = v.convert_cast<unsigned char>();
 		}
-		io.post(boost::bind(&SerialAPI::do_multi_send, this, (char *)message, length));
+		io.post(boost::bind(&SerialAPI::do_multi_send, this, (unsigned char *)message, length));
 	}
 
     // Send a byte to serial port
-    void send(const int msg)
+    void send(const unsigned char msg)
     {
-        io.post(boost::bind(&SerialAPI::do_send, this, (const char)msg)); 
+        io.post(boost::bind(&SerialAPI::do_send, this, (const unsigned char)msg)); 
     }
 
     bool sendtest()
@@ -64,7 +64,7 @@ public:
         return true;
     }
 
-	void DetectComPorts(std::vector<std::wstring>& list)
+	void DetectComPorts(std::vector<std::wstring>& list)char
 	{
 		for(int i=1; i<=255; i++)	
 		{
@@ -118,8 +118,8 @@ private:
     std::string device;
     static const int max_buffer_length = 512;
 
-    char recv_msg[max_buffer_length];
-    std::deque<char> send_msg;
+    unsigned char recv_msg[max_buffer_length];
+    std::deque<unsigned char> send_msg;
 
     FB::BrowserHostPtr m_host;
     FB::JSObjectPtr m_recv_callback;
@@ -129,8 +129,8 @@ private:
 
     void recv_start(void);
     void recv_complete(const boost::system::error_code& error, size_t bytes_transferred);
-	void do_multi_send(const char msg[], int length);
-    void do_send(const char msg);
+	void do_multi_send(const unsigned char msg[], int length);
+    void do_send(const unsigned char msg);
 
 	void send_multi_start(int length);
     void send_start(void);

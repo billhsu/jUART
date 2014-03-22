@@ -100,7 +100,7 @@ void SerialAPI::recv_complete(const boost::system::error_code& error, size_t byt
     if (!error) 
     { // read completed, so process the data 
         //cout.write(recv_msg, bytes_transferred); // echo to standard output
-        std::vector<char> valVec(recv_msg, recv_msg+bytes_transferred);
+        std::vector<unsigned char> valVec(recv_msg, recv_msg+bytes_transferred);
         FB::VariantList vars = FB::make_variant_list(valVec);
 
         if(m_recv_callback)
@@ -113,7 +113,7 @@ void SerialAPI::recv_complete(const boost::system::error_code& error, size_t byt
         do_close(error); 
 } 
 
-void SerialAPI::do_multi_send(const char msg[], const int length) 
+void SerialAPI::do_multi_send(const unsigned char msg[], const int length) 
 {
 	bool write_in_progress = !send_msg.empty(); // is there anything currently being written? 
 	for(int i = 0; i < length; i++)
@@ -125,7 +125,7 @@ void SerialAPI::do_multi_send(const char msg[], const int length)
         send_multi_start(length); 
 }
 
-void SerialAPI::do_send(const char msg) 
+void SerialAPI::do_send(const unsigned char msg) 
 {
     bool write_in_progress = !send_msg.empty(); // is there anything currently being written? 
     send_msg.push_back(msg); // store in write buffer 
