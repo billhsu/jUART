@@ -63,8 +63,9 @@ public:
         return true;
     }
 
-	void DetectComPorts(std::vector<std::wstring>& list)char
+	void DetectComPorts(std::vector<std::wstring>& list)
 	{
+#if defined(_WIN32) || defined(_WIN64)
 		for(int i=1; i<=255; i++)	
 		{
 			wchar_t buff[100];
@@ -85,6 +86,7 @@ public:
 		
 			delete [] lpCC;
 		}
+#endif
 	}
 
 	FB::VariantList getports() {
@@ -128,7 +130,9 @@ private:
 
     void recv_start(void);
     void recv_complete(const boost::system::error_code& error, size_t bytes_transferred);
-	void do_multi_send(const unsigned char msg[], int length);
+	void do_multi_send(const unsigned char msg[], const int length);
+    void send_multi_start(int length);
+    void send_multi_complete(const boost::system::error_code& error);
     void do_send(const unsigned char msg);
     void send_start(void);
     void send_complete(const boost::system::error_code& error);

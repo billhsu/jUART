@@ -124,6 +124,25 @@ void SerialAPI::do_multi_send(const unsigned char msg[], const int length)
         send_multi_start(length); 
 }
 
+void SerialAPI::send_multi_start(int length) 
+{
+    boost::asio::async_write(serial, 
+        boost::asio::buffer(&send_msg.front(), length), 
+        boost::bind(&SerialAPI::send_multi_complete, 
+        this, 
+        boost::asio::placeholders::error)); 
+}
+
+void SerialAPI::send_multi_complete(const boost::system::error_code& error) 
+{ // the asynchronous read operation has now completed or failed and returned an error 
+    if (!error) 
+    { // write completed, so send next write data 
+        send_msg.clear(); // remove the completed data 
+    } 
+    else 
+        do_close(error); 
+} 
+
 void SerialAPI::do_send(const unsigned char msg) 
 {
     bool write_in_progress = !send_msg.empty(); // is there anything currently being written? 
