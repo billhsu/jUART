@@ -25,7 +25,7 @@ sudo cp npjUART.so ~/.mozilla/plugins/
 ```
 
 ###Mac:
-Mac version is not released yet, I don't have a Mac to build and test the project. Sorry :-(
+Mac version is not released yet, I don't have a Mac to build and test the project. You need to build it yourself. Sorry :-(
 
 ##Usage
 * `var ser = plugin().Serial;` Get a Serial object
