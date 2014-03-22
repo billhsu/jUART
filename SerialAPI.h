@@ -55,9 +55,8 @@ public:
     // Send a byte to serial port
     void send(const unsigned char msg)
     {
-        io.post(boost::bind(&SerialAPI::do_send, this, (const unsigned char)msg)); 
+        io.post(boost::bind(&SerialAPI::do_send, this, msg)); 
     }
-
     bool sendtest()
     {
         io.post(boost::bind(&SerialAPI::do_send, this, 'a'));
@@ -131,11 +130,7 @@ private:
     void recv_complete(const boost::system::error_code& error, size_t bytes_transferred);
 	void do_multi_send(const unsigned char msg[], int length);
     void do_send(const unsigned char msg);
-
-	void send_multi_start(int length);
     void send_start(void);
-
-	void send_multi_complete(const boost::system::error_code& error);
     void send_complete(const boost::system::error_code& error);
 
     void do_close(const boost::system::error_code& error);
