@@ -15,6 +15,10 @@ Copy the /bin/Windows/npjUART.dll into your browser's plugin directory.
 Take FireFox for example:
 Copy `/bin/Windows/npjUART.dll` to `C:\Program Files (x86)\Mozilla Firefox\plugins`
 
+For Windows 8, you need to register the DLL first.
+You can copy the DLL under SYSTEM32(or SYSWOW for 64 bit systems).
+After that there's no need to copy it to browser's folders.
+
 ###Linux:
 Copy the ./bin/Linux/npjUART.so into your browser's plugin directory.
 
