@@ -2,6 +2,8 @@
 
 jUART, Cross platform browser plugin for serial port communication from JavaScript
 
+Digital Object Identifiers (DOI): [![citeDOI](https://zenodo.org/badge/4047/billhsu/jUART.png)](http://dx.doi.org/10.5281/zenodo.9999)
+
 ##Supported Platforms:
 * **Browsers:** Chrome, Firefox, Safari, IE(IE version is not released yet)
 
