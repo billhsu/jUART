@@ -115,6 +115,9 @@ Here is an echo test example, which is contained in the /example directory.
 * 5. **Windows:** `prep2008.cmd` (or `prep2005.cmd` / `prep2010.cmd`if you have VS2005/2010) **Linux:** `./prepmake.sh` **Mac:** `./prepmac.sh`
 * 6. **Windows:** open build/Firebreath.xxx **Linux:**``cd build/`` then ``make``
 
+##License
+https://www.gnu.org/licenses/lgpl-2.1.html
+
 ##Author
 **Bill Hsu**
 
