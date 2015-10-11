@@ -98,6 +98,7 @@ public:
 		for (char ** portp = globs.gl_pathv; *portp != NULL; ++portp) {
 			list.push_back(*portp);
 		}
+		globfree(&globs);
 #else
 		// just return all ttys with no window size for now
 		glob_t globs;
@@ -111,6 +112,7 @@ public:
 				list.push_back(*portp);
 			::close(fd);
 		}
+		globfree(&globs);
 #endif
 	}
 
