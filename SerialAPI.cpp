@@ -42,7 +42,7 @@ bool SerialAPI::open(std::string _device)
     catch (boost::exception& e)
     {
     	if(m_err_callback)
-            m_recv_callback->InvokeAsync("", FB::variant_list_of
+            m_err_callback->InvokeAsync("", FB::variant_list_of
             (boost::get_error_info<boost::errinfo_file_open_mode>(e)));
     }
     if(serial.is_open())device = _device;
