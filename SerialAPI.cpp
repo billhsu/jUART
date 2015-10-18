@@ -38,15 +38,16 @@ bool SerialAPI::open(std::string _device)
     try
     {
         serial.open(_device);
+        if(serial.is_open())device = _device;
+        return serial.is_open();
     }
     catch (boost::exception& e)
     {
     	if(m_err_callback)
             m_err_callback->InvokeAsync("", FB::variant_list_of
             (boost::get_error_info<boost::errinfo_file_open_mode>(e)));
+        return false;
     }
-    if(serial.is_open())device = _device;
-    return serial.is_open();
 
 }
 
