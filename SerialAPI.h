@@ -102,9 +102,16 @@ public:
 
     void close()
     {
-        io.post(boost::bind(&SerialAPI::do_close, this, boost::system::error_code()));
-        m_thread.join();
-        io.reset();
+        if(m_thread.get_id()==boost::thread::id())
+        {
+            do_close(boost::system::error_code());
+        }
+        else
+        {
+            io.post(boost::bind(&SerialAPI::do_close, this, boost::system::error_code()));
+            m_thread.join();
+            io.reset();
+        }
     }
 
     void recv_callback(const FB::JSObjectPtr& callback);
