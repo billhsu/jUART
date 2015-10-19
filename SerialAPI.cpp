@@ -35,6 +35,7 @@ SerialAPI::~SerialAPI(void)
 
 bool SerialAPI::open(std::string _device)
 {
+    if(serial.is_open())close();
     try
     {
         serial.open(_device);
