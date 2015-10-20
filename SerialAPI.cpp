@@ -137,11 +137,8 @@ void SerialAPI::send_multi_start(int length)
 
 void SerialAPI::send_multi_complete(const boost::system::error_code& error) 
 { // the asynchronous read operation has now completed or failed and returned an error 
-    if (!error) 
-    { // write completed, so send next write data 
-        send_msg.clear(); // remove the completed data 
-    } 
-    else 
+    send_msg.clear(); // remove the data 
+    if (error) 
         do_close(error); 
 } 
 
@@ -170,8 +167,11 @@ void SerialAPI::send_complete(const boost::system::error_code& error)
         if (!send_msg.empty()) // if there is anything left to be written 
             send_start(); // then start sending the next item in the buffer 
     } 
-    else 
+    else
+    {
+        send_msg.clear();
         do_close(error); 
+    }
 } 
 
 void SerialAPI::do_close(const boost::system::error_code& error) 
