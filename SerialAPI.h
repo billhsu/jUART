@@ -111,7 +111,6 @@ public:
         {
             io.post(boost::bind(&SerialAPI::do_close, this, boost::system::error_code()));
             m_thread.join();
-            io.reset();
         }
     }
 
