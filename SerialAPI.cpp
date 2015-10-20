@@ -72,6 +72,9 @@ bool SerialAPI::set_option(unsigned int baud, unsigned int parity,
     serial.set_option(opt_stop);
     recv_start();
 
+    if (io.stopped())
+        io.reset();
+
     m_thread = boost::thread(boost::bind(&boost::asio::io_service::run, &io));
 
     return true;
