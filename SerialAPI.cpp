@@ -111,10 +111,13 @@ void SerialAPI::recv_complete(const boost::system::error_code& error, size_t byt
             m_recv_callback->InvokeAsync("", FB::variant_list_of
             (vars)
             (bytes_transferred));
-        recv_start(); // start waiting for another asynchronous read again 
     } 
     else 
         do_close(error); 
+    
+    if (serial.is_open()) {
+        recv_start(); // start waiting for another asynchronous read again 
+    }
 } 
 
 void SerialAPI::do_multi_send(const unsigned char msg[], const int length) 
@@ -179,6 +182,8 @@ void SerialAPI::send_complete(const boost::system::error_code& error)
 
 void SerialAPI::do_close(const boost::system::error_code& error) 
 {
+    if (error == boost::asio::error::eof) // this can happen during normal operations
+        return;
     if (error == boost::asio::error::operation_aborted) // if this call is the result of a timer cancel() 
         return; // ignore it because the connection canceled the timer 
     
