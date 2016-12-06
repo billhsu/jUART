@@ -23,7 +23,9 @@
 #endif
 #include "JSAPIAuto.h"
 #include "BrowserHost.h"
-
+#ifdef __unix__
+#include <dirent.h>
+#endif
 
 class SerialAPI: public FB::JSAPIAuto
 {
@@ -113,6 +115,25 @@ public:
 			::close(fd);
 		}
 		globfree(&globs);
+#endif
+#ifdef __unix__
+            DIR *dev = opendir("/dev");
+            struct dirent *ent;
+
+            if (dev != NULL) {
+                while (ent = readdir(dev)) {
+                    std::string name(ent->d_name);
+                    std::string prefix = name.substr(0, 6); 
+                    if (prefix == "ttyUSB" || prefix == "ttyACM") {
+                        std::string fullName = "/dev/";
+                        fullName += name;
+                        std::wstring ws(fullName.begin(), fullName.end());
+                        list.push_back(ws);
+                    }   
+                }   
+
+                closedir(dev);
+            }   
 #endif
 	}
 
