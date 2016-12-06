@@ -7,6 +7,8 @@ jUART, Cross platform browser plugin for serial port communication from JavaScri
 Digital Object Identifiers (DOI): [![citeDOI](https://zenodo.org/badge/4047/billhsu/jUART.png)](http://dx.doi.org/10.5281/zenodo.9999)
 
 ##Supported Platforms:
+
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/billhsu/jUART?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 * **Browsers:** Chrome, Firefox, Safari, IE(IE version is not released yet)
 
 * **OS:** Windows, Linux and Mac
