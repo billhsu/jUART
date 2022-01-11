@@ -6,14 +6,14 @@ jUART, Cross platform browser plugin for serial port communication from JavaScri
 
 Digital Object Identifiers (DOI): [![citeDOI](https://zenodo.org/badge/4047/billhsu/jUART.png)](http://dx.doi.org/10.5281/zenodo.9999)
 
-##Supported Platforms:
+## Supported Platforms:
 * **Browsers:** Chrome, Firefox, Safari, IE(IE version is not released yet)
 
 * **OS:** Windows, Linux and Mac
 
-##Install Plugin
+## Install Plugin
 
-###Windows:
+### Windows:
 Copy the /bin/Windows/npjUART.dll into your browser's plugin directory.
 
 Take FireFox for example:
@@ -23,7 +23,7 @@ For Windows 8, you need to register the DLL first.
 You can copy the DLL under SYSTEM32(or SYSWOW for 64 bit systems).
 After that there's no need to copy it to browser's folders.
 
-###Linux:
+### Linux:
 Copy the ./bin/Linux/npjUART.so into your browser's plugin directory.
 
 Take FireFox for example:
@@ -32,10 +32,10 @@ Take FireFox for example:
 sudo cp npjUART.so ~/.mozilla/plugins/
 ```
 
-###Mac:
+### Mac:
 Mac version is not released yet, I don't have a Mac to build and test the project. You need to build it yourself. Sorry :-(
 
-##Usage
+## Usage
 * `var ser = plugin().Serial;` Get a Serial object
 * `ser.open("COMA");` Open a port
 * `ser.set_option(baud, parity, csize, flow, stop);` Set port options
@@ -107,7 +107,7 @@ Here is an echo test example, which is contained in the /example directory.
 
 ```
 
-##To Build
+## To Build
 * 1. Install [FireBreath](http://www.firebreath.org)
 * 2. Run `python fbgen.py` in firebreath-dev, please set "Plugin Name" to jUART
 * 3. Goto firebreath-dev/projects, delete the jUART directory
@@ -115,10 +115,10 @@ Here is an echo test example, which is contained in the /example directory.
 * 5. **Windows:** `prep2008.cmd` (or `prep2005.cmd` / `prep2010.cmd`if you have VS2005/2010) **Linux:** `./prepmake.sh` **Mac:** `./prepmac.sh`
 * 6. **Windows:** open build/Firebreath.xxx **Linux:**``cd build/`` then ``make``
 
-##License
+## License
 https://www.gnu.org/licenses/lgpl-2.1.html
 
-##Author
+## Author
 **Bill Hsu**
 
 + http://BillHsu.me
